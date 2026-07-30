@@ -125,7 +125,7 @@ All prices are derived from six base monthly rates. Never hardcode a duration pr
 WhatsApp links must be generated per room card with a pre-filled message, e.g.:
 
 ```
-https://wa.me/918083117352?text=Hi%2C%20I%27m%20interested%20in%20Janki%20PG.%20Room%3A%20A%2FC%20Double%20Sharing
+https://wa.me/916232880916?text=Hi%2C%20I%27m%20interested%20in%20Janki%20PG.%20Room%3A%20A%2FC%20Double%20Sharing
 ```
 
 Build a small helper (`src/lib/whatsapp.ts` or similar) that takes a room label and returns this URL — don't hand-write the encoded string in every component.
