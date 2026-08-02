@@ -162,6 +162,7 @@
             exactly who's watching the gate at night.
           </p>
           <div class="mt-8 flex flex-wrap gap-3"><a href="upi://pay?pa=7759880916sbi@ybl&pn=Janki%20PG&cu=INR"
+              data-payment-trigger="true"
               class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-150 bg-maroon-500 text-cream hover:bg-maroon-600">Pay
               and Book Now</a><a href="enquiry" data-enquiry-trigger="true"
               class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-150 border border-maroon-500 text-maroon-500 hover:bg-maroon-50">Enquire</a><a
@@ -320,8 +321,7 @@
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div class="reveal mx-auto max-w-2xl text-center">
           <p class="text-sm font-semibold uppercase tracking-wide text-gold-600">Rooms & Pricing</p>
-          <h2 class="mt-2 font-display text-3xl font-semibold text-maroon-500 sm:text-4xl">Straightforward pricing, no
-            surprises</h2>
+          <h2 class="mt-2 font-display text-3xl font-semibold text-maroon-500 sm:text-4xl">Budget friendly</h2>
           <p class="mt-3 text-ink/70">A/C and Non-A/C rooms, single to triple sharing. Prices shown are monthly starting
             rates.</p>
         </div>
@@ -835,6 +835,24 @@
         type="module">var e = document.getElementById(`enquiry-form`), t = document.getElementById(`enquiry-form-error`), n = document.getElementById(`enquiry-form-success`), r = document.getElementById(`enquiry-form-submit`), i = document.getElementById(`enquiry-form-submit-label`); e?.addEventListener(`submit`, async a => { a.preventDefault(); let o = e.dataset.actionUrl; if (o) { t?.classList.add(`hidden`), r && (r.disabled = !0), i && (i.textContent = `Sending...`); try { await fetch(o, { method: `POST`, mode: `no-cors`, body: new FormData(e) }), e.classList.add(`hidden`), n?.classList.remove(`hidden`), n?.classList.add(`flex`) } catch { t?.classList.remove(`hidden`), r && (r.disabled = !1), i && (i.textContent = `Send Enquiry`) } } });</script>
     </div>
   </dialog>
+  <dialog id="payment-modal"
+    class="m-auto w-[min(90vw,500px)] rounded-2xl bg-cream p-0 shadow-2xl backdrop:bg-maroon-900/60 backdrop:backdrop-blur-sm">
+    <div class="flex items-center justify-between border-b border-maroon-500/10 px-5 py-4">
+      <p class="font-display text-lg font-semibold text-maroon-500">Payment QR Code</p><button type="button"
+        id="payment-modal-close" aria-label="Close payment modal"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-full text-maroon-500 transition-colors hover:bg-maroon-50"><svg
+          width="1em" height="1em" class="h-5 w-5" data-icon="lucide:x">
+          <symbol id="ai:lucide:x" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M18 6L6 18M6 6l12 12" />
+          </symbol>
+          <use href="#ai:lucide:x"></use>
+        </svg></button>
+    </div>
+    <div class="p-5 flex justify-center">
+      <img src="phone pay.jpeg" alt="PhonePe QR Code" class="rounded-xl max-w-full h-auto">
+    </div>
+  </dialog>
   <script>
     const dialog = document.getElementById("enquiry-modal");
     const closeBtn = document.getElementById("enquiry-modal-close");
@@ -853,6 +871,24 @@
     // click on the backdrop (outside the dialog's own content) closes it
     dialog?.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
+    });
+
+    const paymentDialog = document.getElementById("payment-modal");
+    const paymentCloseBtn = document.getElementById("payment-modal-close");
+
+    function openPaymentModal(event) {
+      event.preventDefault();
+      paymentDialog.showModal();
+    }
+
+    document.querySelectorAll("[data-payment-trigger]").forEach((el) => {
+      el.addEventListener("click", openPaymentModal);
+    });
+
+    paymentCloseBtn?.addEventListener("click", () => paymentDialog.close());
+
+    paymentDialog?.addEventListener("click", (event) => {
+      if (event.target === paymentDialog) paymentDialog.close();
     });
   </script>
   <script
