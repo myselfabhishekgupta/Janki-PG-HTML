@@ -838,7 +838,7 @@
   <dialog id="payment-modal"
     class="m-auto w-[min(90vw,500px)] rounded-2xl bg-cream p-0 shadow-2xl backdrop:bg-maroon-900/60 backdrop:backdrop-blur-sm">
     <div class="flex items-center justify-between border-b border-maroon-500/10 px-5 py-4">
-      <p class="font-display text-lg font-semibold text-maroon-500">Payment QR Code</p><button type="button"
+      <p class="font-display text-lg font-semibold text-maroon-500">Make Payment</p><button type="button"
         id="payment-modal-close" aria-label="Close payment modal"
         class="inline-flex h-9 w-9 items-center justify-center rounded-full text-maroon-500 transition-colors hover:bg-maroon-50"><svg
           width="1em" height="1em" class="h-5 w-5" data-icon="lucide:x">
@@ -849,8 +849,24 @@
           <use href="#ai:lucide:x"></use>
         </svg></button>
     </div>
-    <div class="p-5 flex justify-center">
-      <img src="phone pay.jpeg" alt="PhonePe QR Code" class="rounded-xl max-w-full h-auto">
+    <div class="p-5">
+      <div class="mb-6 flex justify-center gap-2">
+        <button id="tab-upi" class="flex-1 rounded-full py-2 text-sm font-semibold transition-colors bg-maroon-500 text-cream">UPI ID</button>
+        <button id="tab-qr" class="flex-1 rounded-full py-2 text-sm font-semibold transition-colors bg-maroon-50 text-maroon-500 hover:bg-maroon-100">Scan QR</button>
+      </div>
+      <div id="payment-upi-view" class="flex flex-col items-center gap-4 text-center">
+        <p class="text-sm text-ink/70">Pay using our UPI ID</p>
+        <div class="rounded-xl bg-white px-4 py-3 border border-maroon-500/20 font-mono text-lg font-semibold text-maroon-500 select-all">
+          8083117352@ybl
+        </div>
+        <a href="upi://pay?pa=8083117352@ybl&pn=Janki%20PG&cu=INR"
+           class="inline-flex min-h-11 items-center justify-center rounded-full bg-maroon-500 px-6 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-maroon-600">
+          Pay Now
+        </a>
+      </div>
+      <div id="payment-qr-view" class="hidden flex justify-center">
+        <img src="phone pay.jpeg" alt="PhonePe QR Code" class="rounded-xl max-w-full h-auto">
+      </div>
     </div>
   </dialog>
   <script>
@@ -890,6 +906,28 @@
     paymentDialog?.addEventListener("click", (event) => {
       if (event.target === paymentDialog) paymentDialog.close();
     });
+
+    const tabUpi = document.getElementById("tab-upi");
+    const tabQr = document.getElementById("tab-qr");
+    const upiView = document.getElementById("payment-upi-view");
+    const qrView = document.getElementById("payment-qr-view");
+
+    function switchPaymentTab(tab) {
+      if (tab === 'upi') {
+        upiView?.classList.remove('hidden');
+        qrView?.classList.add('hidden');
+        if (tabUpi) tabUpi.className = "flex-1 rounded-full py-2 text-sm font-semibold transition-colors bg-maroon-500 text-cream";
+        if (tabQr) tabQr.className = "flex-1 rounded-full py-2 text-sm font-semibold transition-colors bg-maroon-50 text-maroon-500 hover:bg-maroon-100";
+      } else {
+        upiView?.classList.add('hidden');
+        qrView?.classList.remove('hidden');
+        if (tabQr) tabQr.className = "flex-1 rounded-full py-2 text-sm font-semibold transition-colors bg-maroon-500 text-cream";
+        if (tabUpi) tabUpi.className = "flex-1 rounded-full py-2 text-sm font-semibold transition-colors bg-maroon-50 text-maroon-500 hover:bg-maroon-100";
+      }
+    }
+
+    tabUpi?.addEventListener("click", () => switchPaymentTab('upi'));
+    tabQr?.addEventListener("click", () => switchPaymentTab('qr'));
   </script>
   <script
     type="module">var e = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches, t = window.matchMedia(`(pointer: fine)`).matches; if (!e && t && document.querySelectorAll(`[data-tilt]`).forEach(e => { let t = Number(e.dataset.tilt) || 8; e.addEventListener(`pointermove`, n => { let r = e.getBoundingClientRect(), i = (n.clientX - r.left) / r.width - .5, a = (n.clientY - r.top) / r.height - .5; e.style.transform = `perspective(800px) rotateX(${(-a * t).toFixed(2)}deg) rotateY(${(i * t).toFixed(2)}deg) translateZ(4px)` }), e.addEventListener(`pointerleave`, () => { e.style.transform = `` }) }), !e && `IntersectionObserver` in window) { let e = new IntersectionObserver(t => { for (let n of t) n.isIntersecting && (n.target.classList.add(`is-revealed`), e.unobserve(n.target)) }, { threshold: .15 }); document.querySelectorAll(`.reveal`).forEach(t => e.observe(t)) } else document.querySelectorAll(`.reveal`).forEach(e => e.classList.add(`is-revealed`));</script>
